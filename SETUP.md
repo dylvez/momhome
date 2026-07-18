@@ -1,15 +1,15 @@
 # Setting up Susie's laptop
 
-## 1. Put the home page on her laptop
+Her home page lives at: **https://dylvez.github.io/momhome/**
 
-1. Copy `index.html` somewhere permanent, e.g. `C:\Users\<her-user>\momhome\index.html`.
-   (Don't leave it in Downloads — it could get cleaned up.)
-2. In Chrome: **Settings → On startup → Open a specific page** → add
-   `file:///C:/Users/<her-user>/momhome/index.html`.
-3. Optional: also set it as the **Home button** page (Settings → Appearance →
+## 1. Point Chrome at it
+
+1. In Chrome: **Settings → On startup → Open a specific page** → add
+   `https://dylvez.github.io/momhome/`.
+2. Optional: also set it as the **Home button** page (Settings → Appearance →
    Show home button) so one click always brings her back.
 
-Since Chrome already launches at startup, she'll now land on this page every
+Since Chrome already launches at startup, she'll land on this page every
 time she turns on the laptop.
 
 ## 2. The Word button
@@ -25,6 +25,9 @@ point the tile straight at a document, e.g.:
 url: "ms-word:ofe|u|file:///C:/Users/<her-user>/Documents/Letters.docx"
 ```
 
+If she uses Office Online instead of desktop Office, use
+`https://office.com/launch/word`.
+
 ## 3. Windows tweaks (10 minutes, big payoff)
 
 - **Auto sign-in**: run `netplwiz`, select her account, uncheck
@@ -36,8 +39,15 @@ url: "ms-word:ofe|u|file:///C:/Users/<her-user>/Documents/Letters.docx"
 - **Notifications off**: Settings → System → Notifications → off. No scary popups.
 - **Mouse pointer**: Settings → Accessibility → Mouse pointer → bigger, black.
 
-## 4. Changing the page later
+## 4. Updating her page (from anywhere)
 
-Everything editable lives in one block at the top of the `<script>` section in
-`index.html`: her name, the footer note, and the `TILES` list (label, hint,
-emoji, link, colors). Edit, save, done — changes show next time the page loads.
+Everything editable — her name, the footer note, the buttons — lives in
+[config.js](config.js). To change something:
+
+```sh
+# edit config.js, then:
+git add config.js && git commit -m "update tiles" && git push
+```
+
+GitHub Pages redeploys automatically in under a minute. Next time her page
+loads, the changes are live. No touching her laptop.
