@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home</title>
+<style>
+  :root {
+    --cream: #FDF8F0;
+    --ink: #3D3229;
+    --soft-ink: #7A6E60;
+    --card: #FFFFFF;
+    --shadow: 0 2px 8px rgba(93, 74, 51, 0.08), 0 8px 24px rgba(93, 74, 51, 0.08);
+    --shadow-hover: 0 4px 12px rgba(93, 74, 51, 0.12), 0 16px 40px rgba(93, 74, 51, 0.16);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: "Segoe UI", -apple-system, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3vh 4vw;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .greeting {
+    text-align: center;
+    margin-bottom: 4.5vh;
+  }
+
+  .greeting h1 {
+    font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  .greeting .date {
+    margin-top: 0.6rem;
+    font-size: clamp(1.15rem, 2vw, 1.5rem);
+    color: var(--soft-ink);
+    font-weight: 400;
+  }
+
+  .tiles {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 300px));
+    gap: clamp(16px, 2.2vw, 28px);
+    width: 100%;
+    max-width: 980px;
+    justify-content: center;
+  }
+
+  @media (max-width: 760px) {
+    .tiles { grid-template-columns: repeat(2, 1fr); }
+  }
+
+  .tile {
+    background: var(--card);
+    border-radius: 22px;
+    box-shadow: var(--shadow);
+    padding: clamp(20px, 3vh, 34px) 16px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--ink);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    border: 3px solid transparent;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    cursor: pointer;
+  }
+
+  .tile:hover, .tile:focus-visible {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-hover);
+    border-color: var(--accent, #C9B8A3);
+    outline: none;
+  }
+
+  .tile .icon {
+    width: clamp(64px, 8vh, 84px);
+    height: clamp(64px, 8vh, 84px);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: clamp(2rem, 4.5vh, 2.7rem);
+    background: var(--accent-bg, #F1EAE0);
+  }
+
+  .tile .label {
+    font-size: clamp(1.25rem, 2.4vh, 1.6rem);
+    font-weight: 600;
+  }
+
+  .tile .hint {
+    font-size: clamp(0.95rem, 1.8vh, 1.1rem);
+    color: var(--soft-ink);
+    margin-top: -6px;
+  }
+
+  .footer {
+    margin-top: 5vh;
+    font-size: 1.1rem;
+    color: var(--soft-ink);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+  <div class="greeting">
+    <h1 id="greeting">Hello!</h1>
+    <div class="date" id="date"></div>
+  </div>
+
+  <div class="tiles" id="tiles"></div>
+
+  <div class="footer" id="footer"></div>
+
+<script src="config.js"></script>
+<script>
+/* All the editable bits (name, buttons, footer note) live in config.js. */
+
+function timeGreeting() {
+  const h = new Date().getHours();
+  if (h < 12) return "Good morning";
+  if (h < 17) return "Good afternoon";
+  return "Good evening";
+}
+
+document.getElementById("greeting").textContent = `${timeGreeting()}, ${NAME}!`;
+
+document.getElementById("date").textContent = new Date().toLocaleDateString("en-US", {
+  weekday: "long", month: "long", day: "numeric"
+});
+
+const tilesEl = document.getElementById("tiles");
+for (const t of TILES) {
+  const a = document.createElement("a");
+  a.className = "tile";
+  a.href = t.url;
+  a.style.setProperty("--accent-bg", t.color);
+  a.style.setProperty("--accent", t.accent);
+  a.innerHTML = `
+    <div class="icon">${t.icon}</div>
+    <div class="label">${t.label}</div>
+    <div class="hint">${t.hint}</div>`;
+  tilesEl.appendChild(a);
+}
+
+document.getElementById("footer").textContent = FOOTER_NOTE;
+</script>
+</body>
+</html>
